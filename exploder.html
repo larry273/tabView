@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+	body {
+		overflow-x:hidden;
+		overflow-y:auto;
+
+		background-color: #818181;
+	}
+	#container {
+		display:inline-block;
+	}
+	
+	div div {
+		position: relative;
+		display:inline-block;
+		width: 30%;
+		background-color: white;
+		box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+		margin-top: 15px;
+
+		border: 1px solid #ddd;
+		padding: 4px;
+		border-radius: 4px;
+		margin: 1%;
+		
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	
+	.close {
+		width: 48px;
+		height: 48px;
+		opacity: 0.6;
+		position: absolute;
+		top: -6px;
+		right: -6px;
+	}
+
+	div div:hover {
+		border: 1px solid #8c8c8c;
+	}
+	img {
+		width: 98%;
+		opacity: 0.7;	
+	}
+	img:hover {
+		opacity: 1;
+	}
+
+	p {
+	  text-align: center;
+	  font-weight: 600;
+	}
+	  
+    </style>
+  </head>
+  <body>
+	<div id="container">
+	
+	</div>
+    <script src="exploder.js"></script>
+  </body>
+</html>
