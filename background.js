@@ -54,7 +54,15 @@ chrome.browserAction.onClicked.addListener(function(tab) {
 // Ctrl-shift-space: open interface
 chrome.commands.onCommand.addListener(function(command) {
 	if (command === 'show-exploder'){
-		chrome.windows.update(tabwinId, {state: 'maximized'});
+
+		chrome.windows.get(tabwinId, function(window) {
+			if (window.state != 'minimized'){
+				chrome.windows.update(tabwinId, {state: 'minimized'});
+			}
+			else {
+				chrome.windows.update(tabwinId, {state: 'maximized'});
+			}
+		});
 	}
 });
 

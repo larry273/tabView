@@ -1,5 +1,10 @@
 
 var currentTabs = [];
+var tabwinId = null;
+chrome.windows.getCurrent(function(win){
+	tabwinId = win.id;
+});
+
 
 //switch to window and open tab
 function openTab(tabId){
@@ -23,6 +28,7 @@ function closeTab(tabId){
 		chrome.tabs.remove(tabIdInt);
 	});
 
+	chrome.windows.update(tabwinId, {focused: true, state: 'maximized'});
 	//remove from current tabs
 	var i = currentTabs.map(function(e) { return e.tabId; }).indexOf(tabId);
 	currentTabs.splice(i, 1);
@@ -126,7 +132,31 @@ function messageReceived(msg) {
 				return;
 			}
 		}
-		currentTabs.push({win: msg.window, id: msg.id, image: msg.image});
+		currentTabs.push({win: msg.window, id: msg.id, title: msg.title, image: msg.image});
 	}
 }
 
+document.getElementById("searchBar").onkeyup = searchTabs;
+
+//search tab list
+function searchTabs(){
+	var i, title, input, txtVal, filter, div;
+	input = document.getElementById("searchBar");
+	filter = input.value.toUpperCase();
+
+
+	for (i = 0; i < currentTabs.length; i++){
+		
+		title = currentTabs[i].title;
+		div = document.getElementById(currentTabs[i].id);
+		if (filter === ""){
+			div.style.display = "";
+		}
+		else if(title.toUpperCase().indexOf(filter) > -1){
+			div.style.display = "";
+		} 
+		else {
+			div.style.display = "none";
+		}
+	}
+}
