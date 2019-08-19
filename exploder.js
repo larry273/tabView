@@ -5,6 +5,10 @@ chrome.windows.getCurrent(function(win){
 	tabwinId = win.id;
 });
 
+//outside click hide window
+document.getElementById("container").addEventListener("click", function(){
+	chrome.windows.update(tabwinId, {state: 'minimized'});
+})
 
 //switch to window and open tab
 function openTab(tabId){
@@ -17,6 +21,11 @@ function openTab(tabId){
 	chrome.windows.getCurrent(function(win){
 		chrome.windows.update(win.id, {state: 'minimized'});
 	});
+}
+
+
+function getAllTabs(){
+	chrome.runtime.sendMessage({tabs: 'give-tabs'});
 }
 
 //remove from current tabs
@@ -72,6 +81,7 @@ function addElement(imageSrc, title, id){
 	img.src = imageSrc;
 	//add on click functionality
 	img.addEventListener("click", function(){
+		event.stopPropagation()
 		openTab(this.parentNode.id);
 	})
 	
@@ -80,6 +90,7 @@ function addElement(imageSrc, title, id){
 	close.className = "close";
 	close.src = "images/close.png";
 	close.addEventListener("click", function(){
+		event.stopPropagation()
 		closeTab(this.parentNode.id);
 	})
 

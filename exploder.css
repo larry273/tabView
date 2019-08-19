@@ -3,12 +3,13 @@ body {
     overflow-y:auto;
 
     padding: 0;
-      margin: 0;
+    margin: 0;
 
     background-color: #242424;
 }
 #container {
     margin-top: 65px;
+    min-height: 90vh;
 }
 
 div div {

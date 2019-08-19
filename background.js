@@ -100,9 +100,10 @@ function getThumbnail(window){
 //msg comms
 chrome.runtime.onMessage.addListener(messageReceived);
 function messageReceived(msg) {
-   // Do your work here
+   if (msg.tabs == "give-tabs"){
+		chrome.runtime.sendMessage({tabs: tabList, startUp: true});
+   }
 }
-
 
 //save thumbnail on tab activation
 chrome.tabs.onActivated.addListener(function(activeInfo) {
