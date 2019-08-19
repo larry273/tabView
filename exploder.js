@@ -17,7 +17,12 @@ function openTab(tabId){
 	chrome.windows.getCurrent(function(win){
 		chrome.windows.update(win.id, {state: 'minimized'});
 	});
-	
+}
+
+//remove from current tabs
+function removeTabRef(tabId){
+	var i = currentTabs.map(function(e) { return e.tabId; }).indexOf(tabId);
+	currentTabs.splice(i, 1);
 }
 
 //switch to window and close tab
@@ -30,8 +35,9 @@ function closeTab(tabId){
 
 	chrome.windows.update(tabwinId, {focused: true, state: 'maximized'});
 	//remove from current tabs
-	var i = currentTabs.map(function(e) { return e.tabId; }).indexOf(tabId);
-	currentTabs.splice(i, 1);
+	removeTabRef(tabId);
+	//var i = currentTabs.map(function(e) { return e.tabId; }).indexOf(tabId);
+	//currentTabs.splice(i, 1);
 
 }
 
@@ -93,6 +99,7 @@ function addElement(imageSrc, title, id){
 //remove div from overview
 function removeElement(id){
 	document.getElementById(id).remove();
+	removeTabRef(id);
 }
 /*
 chrome.tabs.captureVisibleTab(null,{"format":"png"}, function(imgUrl) {	

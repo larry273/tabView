@@ -136,6 +136,10 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
 	if (changeInfo.status == 'complete'){
 		console.log('tab activated: ' + changeInfo.tabId + ': '+ tab.title);
 		console.log('retake image here');
+
+		if (tab.active && tab.title != "Tab Exploder"){
+			getThumbnail(tab.windowId);
+		}
 		
 		/*
 		chrome.windows.getCurrent(function (win) {
