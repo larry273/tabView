@@ -6,10 +6,13 @@
 		overflow-x:hidden;
 		overflow-y:auto;
 
-		background-color: #818181;
+		padding: 0;
+  		margin: 0;
+
+		background-color: #242424;
 	}
 	#container {
-		display:inline-block;
+		margin-top: 65px;
 	}
 	
 	div div {
@@ -17,7 +20,7 @@
 		display:inline-block;
 		width: 30%;
 		background-color: white;
-		box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+		box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4), 0 6px 20px 0 rgba(0, 0, 0, 0.4);
 		margin-top: 15px;
 
 		border: 1px solid #ddd;
@@ -27,19 +30,21 @@
 		
 		overflow: hidden;
 		text-overflow: ellipsis;
+		transition: transform .2s;
 	}
 	
 	.close {
-		width: 48px;
-		height: 48px;
+		width: 36px;
+		height: 36px;
 		opacity: 0.6;
 		position: absolute;
-		top: -6px;
-		right: -6px;
+		top: -3px;
+		right: -3px;
 	}
 
 	div div:hover {
-		border: 1px solid #8c8c8c;
+		border: 1px solid #313131;
+		transform: scale(1.05);
 	}
 	img {
 		width: 98%;
@@ -53,10 +58,43 @@
 	  text-align: center;
 	  font-weight: 600;
 	}
+
+	#search-container{
+		position: fixed;
+		top:0;
+		width: 100%;
+		height: 60px;
+		overflow: hidden;
+		z-index: 10000;
+		background-color: #313131;
+		text-align:center;
+	}
+	#searchBar{
+		border-radius: 2px;
+		color: white;
+		border: none;
+		background: #242424;
+		width: 25%;
+		margin-top: 8px;
+		padding: 10px;
+		padding-left: 25px;
+	}
+	::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+		color: white;
+		opacity: 0.8; /* Firefox */
+	}
+
+	*:focus {
+		outline: none;
+	}
 	  
     </style>
   </head>
   <body>
+	<div id="search-container">
+		<input type="text" id="searchBar" onkeyup="myFunction()" placeholder="Search Tabs">
+	</div>
+
 	<div id="container">
 	
 	</div>

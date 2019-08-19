@@ -2,26 +2,63 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+var tabwinId = null;
 
+
+openWindow();
+
+function openWindow(state = 'minimized'){
+	chrome.windows.create({
+		url:chrome.extension.getURL("exploder.html"),
+		type: "popup",
+		state: state }, function(window){
+			tabwinId = window.id;
+	});	
+}
+		  
 chrome.browserAction.onClicked.addListener(function(tab) {
 	chrome.windows.getCurrent(function (win) {
             chrome.tabs.query({windowId: win.id, active: true}, function (tabs) {
 			var tab = tabs[0];
 			
+
+			chrome.windows.get(tabwinId, function(window) {
+				if (typeof(window) == 'undefined'){
+					openWindow('maximized');
+
+					chrome.runtime.sendMessage({tabs: tabList, startUp: true});
+				}
+				else{
+					console.log('sending tab list');
+					//chrome.runtime.sendMessage({tabs: tabList, startUp: true});
+					chrome.windows.update(tabwinId, {state: 'maximized'});
+				}
+			})
+			
+			/*
 			 chrome.windows.create({
 					url:chrome.extension.getURL("exploder.html") + '?' + win.id,
 					type: "popup",
 					state:"maximized"
+				  }, function(window) {
+					  	console.log('sending tab list');
+						chrome.runtime.sendMessage({tabs: tabList, startUp: true});
 				  });
+				  */
 			});
+			
 		});
 	});
 
 //command on hotkeys
 // Ctrl-shift-space: open interface
 chrome.commands.onCommand.addListener(function(command) {
-	console.log('Command:', command);
+	if (command === 'show-exploder'){
+		chrome.windows.update(tabwinId, {state: 'maximized'});
+	}
 });
+
+var tabList = [];
 
 //capture visible tab for preview image
 function getThumbnail(window){
@@ -39,7 +76,15 @@ function getThumbnail(window){
 			}, function(response) {
 
 			});
-
+			
+			//save for window opening
+			for (let k in tabList) {
+				if (tabList[k].id === tabs[0].id) {
+					tabList[k].image = imgUrl;
+					return;
+				}
+			}
+			tabList.push({win: window, title: tabs[0].title, id: tabs[0].id, image: imgUrl});
 		});
 	});
 }
@@ -72,6 +117,9 @@ chrome.tabs.onRemoved.addListener(function(tabId, removeInfo) {
 	}, function(response) {
 
 	});
+
+	var i = tabList.map(function(e) { return e.tabId; }).indexOf(tabId);
+	tabList.splice(i, 1);
 
 }); 
 

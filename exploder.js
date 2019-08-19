@@ -1,7 +1,6 @@
 
 var currentTabs = [];
 
-
 //switch to window and open tab
 function openTab(tabId){
 	var tabIdInt = parseInt(tabId);
@@ -9,6 +8,11 @@ function openTab(tabId){
 	chrome.windows.update(tabWindow, { focused: true }, function() {
 		chrome.tabs.update(tabIdInt, { active: true });
 	});
+
+	chrome.windows.getCurrent(function(win){
+		chrome.windows.update(win.id, {state: 'minimized'});
+	});
+	
 }
 
 //switch to window and close tab
@@ -23,6 +27,14 @@ function closeTab(tabId){
 	var i = currentTabs.map(function(e) { return e.tabId; }).indexOf(tabId);
 	currentTabs.splice(i, 1);
 
+}
+
+function addElements(tabs){
+	var i;
+	for (i = 0; i < tabs.length; i++) { 
+		addElement(tabs[i].image, tabs[i].title, tabs[i].id);
+	}
+	currentTabs = tabs;
 }
 
 //add element to interface
@@ -99,7 +111,11 @@ chrome.tabs.captureVisibleTab(null,{"format":"png"}, function(imgUrl) {
 //msg comms
 chrome.runtime.onMessage.addListener(messageReceived);
 function messageReceived(msg) {
-	if (msg.remove){
+	if (msg.startUp){
+		console.log('recieving tab list');
+		addElements(msg.tabs);
+	}
+	else if (msg.remove){
 		removeElement(msg.id);
 	}
 	else{
@@ -113,5 +129,4 @@ function messageReceived(msg) {
 		currentTabs.push({win: msg.window, id: msg.id, image: msg.image});
 	}
 }
-
 
