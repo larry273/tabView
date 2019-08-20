@@ -121,7 +121,7 @@ function removeElement(id){
 	var elem = document.getElementById(id);//.remove();
 
 	var scale = 1;
-	var id = setInterval(frame, 2);
+	var id = setInterval(frame, 1);
 	function frame() {
 		if (scale < 0.01) {
 			clearInterval(id);
