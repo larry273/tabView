@@ -30,8 +30,20 @@ function getAllTabs(){
 
 //remove from current tabs
 function removeTabRef(tabId){
-	var i = currentTabs.map(function(e) { return e.tabId; }).indexOf(tabId);
-	currentTabs.splice(i, 1);
+	//var i = currentTabs.map(function(e) { return e.tabId; }).indexOf(tabId);
+	var remove_i = null;
+	var tabIdInt = parseInt(tabId);
+
+	for (var i = 0; i < currentTabs.length; i++){
+		if (currentTabs[i].id === tabIdInt){
+			remove_i = i;
+			break;
+		}		
+	}
+
+	if (remove_i != null){
+		currentTabs.splice(remove_i, 1);
+	}
 }
 
 //switch to window and close tab
@@ -45,9 +57,6 @@ function closeTab(tabId){
 	chrome.windows.update(tabwinId, {focused: true, state: 'maximized'});
 	//remove from current tabs
 	removeTabRef(tabId);
-	//var i = currentTabs.map(function(e) { return e.tabId; }).indexOf(tabId);
-	//currentTabs.splice(i, 1);
-
 }
 
 function addElements(tabs){
@@ -110,27 +119,8 @@ function addElement(imageSrc, title, id){
 //remove div from overview
 function removeElement(id){
 	document.getElementById(id).remove();
-	removeTabRef(id);
 }
-/*
-chrome.tabs.captureVisibleTab(null,{"format":"png"}, function(imgUrl) {	
-	chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function (tabs) {
-		var tabTitle = tabs[0].title;
-		
-		var img = document.createElement("img");
-	
-		img.src = imgUrl;
-		var src = document.getElementById("card");
-		
-		var p = document.createElement("p");
-		
-		p.innerHTML = tabTitle;
-		
-		src.appendChild(p);
-		src.appendChild(img);
-	});
-});    
-*/
+
 
 //msg comms
 chrome.runtime.onMessage.addListener(messageReceived);
@@ -141,12 +131,16 @@ function messageReceived(msg) {
 	}
 	else if (msg.remove){
 		removeElement(msg.id);
+		removeTabRef(msg.id);
 	}
 	else{
 		addElement(msg.image, msg.title + ':' + msg.id, msg.id);
 		
 		for (let k in currentTabs) {
 			if (currentTabs[k].id === msg.id) {
+				currentTabs[k].title = msg.title;
+				currentTabs[k].image = msg.image;
+				currentTabs[k].win = msg.window;
 				return;
 			}
 		}

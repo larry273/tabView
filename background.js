@@ -89,6 +89,8 @@ function getThumbnail(window){
 			for (let k in tabList) {
 				if (tabList[k].id === tabs[0].id) {
 					tabList[k].image = imgUrl;
+					tabList[k].win = window;
+					tabList[k].title = tabs[0].title;
 					return;
 				}
 			}
@@ -100,9 +102,9 @@ function getThumbnail(window){
 //msg comms
 chrome.runtime.onMessage.addListener(messageReceived);
 function messageReceived(msg) {
-   if (msg.tabs == "give-tabs"){
-		chrome.runtime.sendMessage({tabs: tabList, startUp: true});
-   }
+   //if (msg.tabs == "give-tabs"){
+		//chrome.runtime.sendMessage({tabs: tabList, startUp: true});
+   //}
 }
 
 //save thumbnail on tab activation
