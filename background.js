@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 var tabwinId = null;
+var extensionWindowName = "Tab Exploder";
 
 
 openWindow();
@@ -111,7 +112,9 @@ function messageReceived(msg) {
 chrome.tabs.onActivated.addListener(function(activeInfo) {
 	chrome.tabs.get(activeInfo.tabId, function(tab){
 		console.log('tab activated: ' + activeInfo.tabId + ': '+ tab.title);		
-		getThumbnail(tab.windowId);
+		if(tab.title != extensionWindowName){
+			getThumbnail(tab.windowId);
+		}
 
 	});
 }); 
@@ -140,7 +143,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
 		console.log('tab activated: ' + changeInfo.tabId + ': '+ tab.title);
 		console.log('retake image here');
 
-		if (tab.active && tab.title != "Tab Exploder"){
+		if (tab.active && tab.title != extensionWindowName){
 			getThumbnail(tab.windowId);
 		}
 		
