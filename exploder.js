@@ -118,7 +118,19 @@ function addElement(imageSrc, title, id){
 
 //remove div from overview
 function removeElement(id){
-	document.getElementById(id).remove();
+	var elem = document.getElementById(id);//.remove();
+
+	var scale = 1;
+	var id = setInterval(frame, 2);
+	function frame() {
+		if (scale < 0.01) {
+			clearInterval(id);
+			elem.remove();
+		} else {
+			scale = scale - 0.02; 
+			elem.style.transform = "scale(" +  scale + ")";
+		}
+	}
 }
 
 
