@@ -1,9 +1,15 @@
 
 var currentTabs = [];
 var tabwinId = null;
+var extensionWindowName = "Tab Exploder";
+
+
 chrome.windows.getCurrent(function(win){
 	tabwinId = win.id;
 });
+
+//fetch existing open tabs
+getAllTabs();
 
 //outside click hide window
 document.getElementById("container").addEventListener("click", function(){
@@ -23,9 +29,32 @@ function openTab(tabId){
 	});
 }
 
-
+//query all tabs to populate overview without screenshots
 function getAllTabs(){
-	chrome.runtime.sendMessage({tabs: 'give-tabs'});
+	chrome.tabs.query({}, function(tabs){
+		//each tab add with placeholder image
+		tabs.forEach(tb => {
+
+			if (tb.title == extensionWindowName){
+				return;
+			}
+
+			//add blank tabs to overview
+			addElement(null, tb.title + ':' + tb.id, tb.id);
+
+			//populate current tabs array
+			for (let k in currentTabs) {
+				if (currentTabs[k].id === tb.id) {
+					currentTabs[k].title = tb.title;
+					currentTabs[k].image = null;
+					currentTabs[k].win = tb.window;
+					return;
+				}
+			}
+			currentTabs.push({win: tb.windowId, id: tb.id, title: tb.title, image: null});
+            
+        });
+    });
 }
 
 //remove from current tabs
@@ -70,7 +99,7 @@ function addElements(tabs){
 //add element to interface
 function addElement(imageSrc, title, id){
 	//placeholder image
-	if (typeof(imageSrc) == 'undefined'){
+	if (typeof(imageSrc) == 'undefined' || imageSrc == null){
 		imageSrc = 'images/blank.png';
 	}
 	
