@@ -16,6 +16,23 @@ document.getElementById("container").addEventListener("click", function(){
 	chrome.windows.update(tabwinId, {state: 'minimized'});
 })
 
+//new tab button
+document.getElementById("newTab").addEventListener("click", function(){
+	chrome.tabs.create({url: "chrome://newtab", active: false});
+	//getAllTabs();
+})
+
+//close all button
+document.getElementById("closeAll").addEventListener("click", function(){
+	currentTabs.forEach(tab => {
+		chrome.tabs.remove(tab.id)
+	})
+})
+
+//scroll to the bottom
+window.scrollTo(0, document.body.scrollHeight);
+
+
 //switch to window and open tab
 function openTab(tabId){
 	var tabIdInt = parseInt(tabId);
@@ -46,7 +63,7 @@ function getAllTabs(){
 			for (let k in currentTabs) {
 				if (currentTabs[k].id === tb.id) {
 					currentTabs[k].title = tb.title;
-					currentTabs[k].image = null;
+					//currentTabs[k].image = null;
 					currentTabs[k].win = tb.window;
 					return;
 				}
@@ -143,12 +160,18 @@ function addElement(imageSrc, title, id){
 	div.appendChild(close)
 	div.appendChild(img);
 	src.appendChild(div);
+
+	//scroll to the bottom
+	document.getElementById('container').scrollIntoView({ behavior: 'smooth', block: 'end' });
+
 }
 
 //remove div from overview
 function removeElement(id){
 	var elem = document.getElementById(id);//.remove();
 
+	elem.remove();
+	/*
 	var scale = 1;
 	var id = setInterval(frame, 1);
 	function frame() {
@@ -156,10 +179,11 @@ function removeElement(id){
 			clearInterval(id);
 			elem.remove();
 		} else {
-			scale = scale - 0.02; 
+			scale = scale - 0.01; 
 			elem.style.transform = "scale(" +  scale + ")";
 		}
 	}
+	*/
 }
 
 
