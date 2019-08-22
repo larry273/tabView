@@ -39,15 +39,7 @@ body {
     right: -3px;
 }
 
-.topButton {
-    padding: 10px;
-    border-radius: 2px;
-    background: #242424;
-    color: white;
-    border: none;
-    margin-left: 5px;
-    margin-right: 5px;
-}
+
 
 .topButton:hover {
     background: #424242;
@@ -57,7 +49,7 @@ body {
     transform: scale(0.95);
 }
 
-div div:hover {
+#container div:hover {
     border: 1px solid #313131;
     transform: scale(1.05);
 }
@@ -81,7 +73,7 @@ p {
     height: 60px;
     z-index: 10000;
     background-color: #313131;
-    display: flex;
+    text-align:center;
 }
 #searchBar{
     border-radius: 2px;
@@ -89,25 +81,25 @@ p {
     border: none;
     background: #242424;
     width: 25%;
+    margin-top: 8px;
     padding: 10px;
     padding-left: 25px;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex: 1;
 }
 #topButtons{
-    flex: 1;          /* shorthand for: flex-grow: 1, flex-shrink: 1, flex-basis: 0 */
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
+    position: absolute;
+    right: 0;
+    top: 0;
 }
-#something{
-    flex: 1;          /* shorthand for: flex-grow: 1, flex-shrink: 1, flex-basis: 0 */
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
+
+.topButton {
+    padding: 10px;
+    border-radius: 2px;
+    background: #242424;
+    color: white;
+    border: none;
+    margin-left: 5px;
+    margin-right: 10px;
+    margin-top: 8px;
 }
 
 ::-webkit-search-cancel-button{
