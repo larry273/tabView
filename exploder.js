@@ -27,6 +27,12 @@ document.getElementById("closeAll").addEventListener("click", function(){
 	currentTabs.forEach(tab => {
 		chrome.tabs.remove(tab.id)
 	})
+
+	chrome.tabs.query({}, function(tabs){
+		if (tabs.length <= 1){
+			chrome.windows.remove(tabwinId);
+		}
+	})
 })
 
 //scroll to the bottom
@@ -57,7 +63,7 @@ function getAllTabs(){
 			}
 
 			//add blank tabs to overview
-			addElement(null, tb.title + ':' + tb.id, tb.id);
+			addElement(null, tb.title, tb.id);
 
 			//populate current tabs array
 			for (let k in currentTabs) {
@@ -199,7 +205,7 @@ function messageReceived(msg) {
 		removeTabRef(msg.id);
 	}
 	else{
-		addElement(msg.image, msg.title + ':' + msg.id, msg.id);
+		addElement(msg.image, msg.title, msg.id);
 		
 		for (let k in currentTabs) {
 			if (currentTabs[k].id === msg.id) {

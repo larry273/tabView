@@ -124,6 +124,14 @@ chrome.tabs.onRemoved.addListener(function(tabId, removeInfo) {
 	console.log('tab removed: ' + tabId);
 	console.log('remove image here');
 
+	//check if exloder is last tab
+	chrome.tabs.query({}, function(tabs) { 
+		console.log(tabs.length);
+		if (tabs.length <= 1) {
+			chrome.windows.remove(tabwinId);
+		}
+	});
+
 	//send removal id to interface
 	chrome.runtime.sendMessage({
 		id: tabId,
