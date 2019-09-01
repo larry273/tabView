@@ -54,8 +54,9 @@ chrome.browserAction.onClicked.addListener(function(tab) {
 //command on hotkeys
 // Ctrl-shift-space: open interface
 chrome.commands.onCommand.addListener(function(command) {
+	console.log(command);
 	if (command === 'show-exploder'){
-
+		console.log('show-hotkey');
 		chrome.windows.get(tabwinId, function(window) {
 			if (window.state != 'minimized'){
 				chrome.windows.update(tabwinId, {state: 'minimized'});
@@ -122,7 +123,6 @@ chrome.tabs.onActivated.addListener(function(activeInfo) {
 //remove thumbnail on tab removal
 chrome.tabs.onRemoved.addListener(function(tabId, removeInfo) {
 	console.log('tab removed: ' + tabId);
-	console.log('remove image here');
 
 	//check if exloder is last tab
 	chrome.tabs.query({}, function(tabs) { 
@@ -149,7 +149,6 @@ chrome.tabs.onRemoved.addListener(function(tabId, removeInfo) {
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
 	if (changeInfo.status == 'complete'){
 		console.log('tab activated: ' + changeInfo.tabId + ': '+ tab.title);
-		console.log('retake image here');
 
 		if (tab.active && tab.title != extensionWindowName){
 			getThumbnail(tab.windowId);

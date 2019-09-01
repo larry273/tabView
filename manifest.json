@@ -16,10 +16,8 @@
   "commands": {
     "show-exploder": {
       "suggested_key": {
-        "default": "Ctrl+Shift+Space",
-        "linux": "Ctrl+Shift+Space",
-        "windows": "Ctrl+Shift+Space",
-        "mac": "Alt+Shift+Space"
+        "default": "Ctrl+Space",
+        "windows": "Ctrl+Space"
       },
       "description": "Open Tab-Exploder"
     }
