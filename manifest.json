@@ -1,7 +1,7 @@
 {
   "name": "Tab-Exploder",
   "version": "1.0",
-  "description": "Explodes tabs into an overview selection",
+  "description": "Explodes browser tabs into a visual overview.",
   "permissions": ["tabs","activeTab","<all_urls>"],
   "background": {
     "scripts": ["background.js"]
@@ -16,10 +16,11 @@
   "commands": {
     "show-exploder": {
       "suggested_key": {
-        "default": "Alt+K",
-        "windows": "Alt+K"
+        "default": "Ctrl+Shift+0",
+        "windows": "Ctrl+Shift+0"
       },
-      "description": "Open Tab-Exploder"
+      "description": "Open Tab-Exploder",
+      "global": true
     }
   }
 }
