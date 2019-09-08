@@ -1,7 +1,7 @@
 
 var currentTabs = [];
 var tabwinId = null;
-var extensionWindowName = "Tab Exploder";
+var extensionWindowName = "TabView";
 
 
 chrome.windows.getCurrent(function(win){

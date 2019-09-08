@@ -1,13 +1,13 @@
 {
-  "name": "Tab-Exploder",
+  "name": "TabView",
   "version": "1.0",
-  "description": "Explodes browser tabs into a visual overview.",
+  "description": "Presents all browser tabs into a visual overview.",
   "permissions": ["tabs","activeTab","<all_urls>"],
   "background": {
     "scripts": ["background.js"]
   },
   "browser_action": {
-    "default_title": "Tab-Exploder"
+    "default_title": "TabView"
 	},
   "icons": {
     "128": "images/icon.png"
@@ -16,11 +16,9 @@
   "commands": {
     "show-exploder": {
       "suggested_key": {
-        "default": "Ctrl+Shift+0",
-        "windows": "Ctrl+Shift+0"
+        "default": "Ctrl+Space"
       },
-      "description": "Open Tab-Exploder",
-      "global": true
+      "description": "Show TabView"
     }
   }
 }

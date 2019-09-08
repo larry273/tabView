@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 var tabwinId = null;
-var extensionWindowName = "Tab Exploder";
+var extensionWindowName = "TabView";
 
 
 openWindow();
