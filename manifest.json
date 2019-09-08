@@ -16,8 +16,8 @@
   "commands": {
     "show-exploder": {
       "suggested_key": {
-        "default": "Ctrl+Shift+Space",
-        "windows": "Ctrl+Shift+Space"
+        "default": "Ctrl+Shift+E",
+        "windows": "Ctrl+Shift+E"
       },
       "description": "Open Tab-Exploder"
     }
