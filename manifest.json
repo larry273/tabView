@@ -14,7 +14,7 @@
   },
   "manifest_version": 2,
   "commands": {
-    "show-exploder": {
+    "show-tabview": {
       "suggested_key": {
         "default": "Ctrl+Space"
       },

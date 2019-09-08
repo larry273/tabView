@@ -10,7 +10,7 @@ openWindow();
 
 function openWindow(state = 'minimized'){
 	chrome.windows.create({
-		url:chrome.extension.getURL("exploder.html"),
+		url:chrome.extension.getURL("view.html"),
 		type: "popup",
 		state: state }, function(window){
 			tabwinId = window.id;
@@ -55,7 +55,7 @@ chrome.browserAction.onClicked.addListener(function(tab) {
 // Ctrl-shift-space: open interface
 chrome.commands.onCommand.addListener(function(command) {
 	console.log(command);
-	if (command === 'show-exploder'){
+	if (command === 'show-tabview'){
 		console.log('show-hotkey');
 		chrome.windows.get(tabwinId, function(window) {
 			if (window.state != 'minimized'){
