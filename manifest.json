@@ -16,8 +16,8 @@
   "commands": {
     "show-exploder": {
       "suggested_key": {
-        "default": "Ctrl+Shift+E",
-        "windows": "Ctrl+Shift+E"
+        "default": "Ctrl+Shift+K",
+        "windows": "Ctrl+Shift+K"
       },
       "description": "Open Tab-Exploder"
     }
