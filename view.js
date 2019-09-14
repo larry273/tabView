@@ -177,19 +177,6 @@ function removeElement(id){
 	var elem = document.getElementById(id);//.remove();
 
 	elem.remove();
-	/*
-	var scale = 1;
-	var id = setInterval(frame, 1);
-	function frame() {
-		if (scale < 0.01) {
-			clearInterval(id);
-			elem.remove();
-		} else {
-			scale = scale - 0.01; 
-			elem.style.transform = "scale(" +  scale + ")";
-		}
-	}
-	*/
 }
 
 
