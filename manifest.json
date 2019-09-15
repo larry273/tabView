@@ -1,7 +1,7 @@
 {
   "name": "TabView",
   "version": "1.0",
-  "description": "View and control all open browser tabs into a multitasking view",
+  "description": "View and manage all open browser tabs in a multitasking view",
   "permissions": ["tabs","activeTab","<all_urls>"],
   "background": {
     "scripts": ["background.js"]
