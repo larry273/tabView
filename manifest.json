@@ -16,8 +16,8 @@
   "commands": {
     "show-tabview": {
       "suggested_key": {
-        "default": "Ctrl+Space"
-      },
+        "default": "Shift+Ctrl+Space"
+		},
       "description": "Show TabView"
     }
   }
