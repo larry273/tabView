@@ -2,7 +2,8 @@
 
 A chrome extension for quickly switching between open browser tabs visually. Search, open, close, create and preview browser tabs all in one location.  Hot key access (Shift+Ctrl+Space) for quick access to TabView. 
 
-Chrome Web Store Link:
+
+Chrome Web Store Link
 https://chrome.google.com/webstore/detail/tabview/bgcmjpjlnpbhjoehlpmadpljgaigilmj
 
 
