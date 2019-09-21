@@ -25,4 +25,4 @@ https://chrome.google.com/webstore/detail/tabview/bgcmjpjlnpbhjoehlpmadpljgaigil
 
 
 <br>
-Just if you want to, <a href="paypal.me/larrystaecey">paypal link</a>
+Just if you want to, <a href="https://www.paypal.me/larrystaecey">paypal link</a>
