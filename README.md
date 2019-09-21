@@ -16,3 +16,7 @@ https://chrome.google.com/webstore/detail/tabview/bgcmjpjlnpbhjoehlpmadpljgaigil
   <img src="screens/click.png" width="500" /> 
   <img src="screens/search.png" width="500" />
 </p>
+
+# Credits
+
+SortableJS - https://github.com/SortableJS/Sortable
