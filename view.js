@@ -1,8 +1,6 @@
-
 var currentTabs = [];
 var tabwinId = null;
 var extensionWindowName = "TabView";
-
 
 chrome.windows.getCurrent(function(win){
 	tabwinId = win.id;
@@ -22,6 +20,17 @@ document.getElementById("newTab").addEventListener("click", function(){
 	//getAllTabs();
 })
 
+//new window button
+document.getElementById("newWin").addEventListener("click", function(){
+	chrome.windows.create({
+		url:"chrome://newtab",
+		focused: false
+		}, function(window){
+			chrome.windows.update(tabwinId, {focused: true});
+			createWinDiv(window.id);
+	});	
+})
+
 //close all button
 document.getElementById("closeAll").addEventListener("click", function(){
 	currentTabs.forEach(tab => {
@@ -38,11 +47,11 @@ document.getElementById("closeAll").addEventListener("click", function(){
 //scroll to the bottom
 window.scrollTo(0, document.body.scrollHeight);
 
-
 //switch to window and open tab
 function openTab(tabId){
 	var tabIdInt = parseInt(tabId);
 	var tabWindow = currentTabs.find(x => x.id == tabIdInt).win;
+	//set window active, set tab active
 	chrome.windows.update(tabWindow, { focused: true }, function() {
 		chrome.tabs.update(tabIdInt, { active: true });
 	});
@@ -63,7 +72,7 @@ function getAllTabs(){
 			}
 
 			//add blank tabs to overview
-			addElement(null, tb.title, tb.id);
+			addElement(null, tb.title, tb.id, tb.windowId);
 
 			//populate current tabs array
 			for (let k in currentTabs) {
@@ -102,25 +111,55 @@ function removeTabRef(tabId){
 function closeTab(tabId){
 	var tabIdInt = parseInt(tabId);
 	var tabWindow = currentTabs.find(x => x.id == tabIdInt).win;
-	chrome.windows.update(tabWindow, { focused: true }, function() {
-		chrome.tabs.remove(tabIdInt);
-	});
+	chrome.tabs.remove(tabIdInt);
+	//chrome.windows.update(tabWindow, { focused: true }, function() {
+	//		chrome.tabs.remove(tabIdInt);
+	//});
 
 	chrome.windows.update(tabwinId, {focused: true, state: 'maximized'});
 	//remove from current tabs
 	removeTabRef(tabId);
 }
 
-function addElements(tabs){
-	var i;
-	for (i = 0; i < tabs.length; i++) { 
-		addElement(tabs[i].image, tabs[i].title, tabs[i].id);
-	}
-	currentTabs = tabs;
+//create html window div
+function createWinDiv(win){
+	var src = document.createElement("div");
+	var container = document.getElementById("container");
+
+	var existingWin = document.getElementsByClassName("window");
+
+	src.id = win;
+	src.className = "window";
+	var pWin = document.createElement("p");
+	var wintitle = "Window " + (existingWin.length + 1);
+	pWin.innerHTML = wintitle;
+	src.append(pWin);
+	container.append(src);
+
+	//make window sortable
+	var sortable = Sortable.create(src, {
+		animation: 250,
+		draggable: ".tab",
+		group: 'tabs',
+		onEnd: function (/**Event*/evt) {
+			var itemEl = evt.item;  // dragged HTMLElement
+			evt.to;    // target list
+			evt.from;  // previous list
+			evt.oldIndex;  // element's old index within old parent
+			evt.newIndex;  // element's new index within new parent
+			evt.oldDraggableIndex; // element's old index within old parent, only counting draggable elements
+			evt.newDraggableIndex; // element's new index within new parent, only counting draggable elements
+
+			//move tab index or window
+			moveTab(itemEl, evt.newDraggableIndex, evt.to, evt.from);
+		},
+
+	});
+	return src;
 }
 
 //add element to interface
-function addElement(imageSrc, title, id){
+function addElement(imageSrc, title, id, win){
 	//placeholder image
 	if (typeof(imageSrc) == 'undefined' || imageSrc == null){
 		imageSrc = 'images/blank.png';
@@ -137,6 +176,7 @@ function addElement(imageSrc, title, id){
 	//set tab id to div of element
 	var div = document.createElement("div");
 	div.id = id;
+	div.className = "tab";
 	
 	var img = document.createElement("img");
 	img.src = imageSrc;
@@ -159,7 +199,13 @@ function addElement(imageSrc, title, id){
 	var tabTitle = title;
 	p.innerHTML = tabTitle;
 	
-	var src = document.getElementById("container");
+	//add to window div, create if not exists
+	if(document.getElementById(win)){
+		var src = document.getElementById(win); 
+	}
+	else{
+		var src = createWinDiv(win);
+	}
 
 	//add div to html
 	div.appendChild(p);
@@ -172,28 +218,54 @@ function addElement(imageSrc, title, id){
 
 }
 
+//move tab location
+function moveTab(tab, index, win, oldWin){
+	var tabId = parseInt(tab.id);
+	var winId = parseInt(win.id);
+
+	chrome.tabs.move(tabId, {windowId: winId, index: index});
+	removeWindowEl(oldWin);
+
+	for (let k in currentTabs) {
+		if (currentTabs[k].id === tabId) {
+			currentTabs[k].win = winId;
+		}
+	}
+}
+
 //remove div from overview
 function removeElement(id){
 	var elem = document.getElementById(id);//.remove();
 
+	var window = elem.parentElement;
 	elem.remove();
+	removeWindowEl(window);
 }
 
+//check to remove window element
+function removeWindowEl(el){
+	if (el.childNodes.length <= 1){
+		el.remove();
+	}
+
+	//rename all window elements
+	var winEls = document.getElementsByClassName("window");
+	for (var i = 0; i < winEls.length; i++){
+		winEls[i].firstChild.innerHTML = "Window " + (i + 1);
+	}
+}
 
 //msg comms
 chrome.runtime.onMessage.addListener(messageReceived);
 function messageReceived(msg) {
-	if (msg.startUp){
-		console.log('recieving tab list');
-		addElements(msg.tabs);
-	}
-	else if (msg.remove){
+	if (msg.remove){
 		removeElement(msg.id);
 		removeTabRef(msg.id);
 	}
 	else{
-		addElement(msg.image, msg.title, msg.id);
+		addElement(msg.image, msg.title, msg.id, msg.window);
 		
+		//update existing value if exists
 		for (let k in currentTabs) {
 			if (currentTabs[k].id === msg.id) {
 				currentTabs[k].title = msg.title;
@@ -202,13 +274,13 @@ function messageReceived(msg) {
 				return;
 			}
 		}
+		//add tab to total list
 		currentTabs.push({win: msg.window, id: msg.id, title: msg.title, image: msg.image});
 	}
 }
 
-document.getElementById("searchBar").onkeyup = searchTabs;
-
 //search tab list
+document.getElementById("searchBar").onkeyup = searchTabs;
 function searchTabs(){
 	var i, title, input, txtVal, filter, div;
 	input = document.getElementById("searchBar");

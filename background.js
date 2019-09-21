@@ -5,7 +5,6 @@
 var tabwinId = null;
 var extensionWindowName = "TabView";
 
-
 openWindow();
 
 function openWindow(state = 'minimized'){
@@ -16,18 +15,16 @@ function openWindow(state = 'minimized'){
 			tabwinId = window.id;
 	});	
 }
-		  
+
+//on extension icon clicked
 chrome.browserAction.onClicked.addListener(function(tab) {
 	chrome.windows.getCurrent(function (win) {
             chrome.tabs.query({windowId: win.id, active: true}, function (tabs) {
 			var tab = tabs[0];
 			
-
 			chrome.windows.get(tabwinId, function(window) {
 				if (typeof(window) == 'undefined'){
 					openWindow('maximized');
-
-					chrome.runtime.sendMessage({tabs: tabList, startUp: true});
 				}
 				else{
 					chrome.windows.update(tabwinId, {state: 'maximized'});

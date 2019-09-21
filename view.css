@@ -10,12 +10,15 @@ body {
 #container {
     margin-top: 65px;
     min-height: 90vh;
+    position: relative;
+    margin: auto;
+    top: 60px;
 }
 
-#container div {
+.tab {
     position: relative;
     display:inline-block;
-    width: 30%;
+    width: 31%;
     height: 250px;
     background-color: white;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4), 0 6px 20px 0 rgba(0, 0, 0, 0.4);
@@ -28,9 +31,22 @@ body {
     
     overflow: hidden;
     text-overflow: ellipsis;
-    transition: transform .2s;
 }
 
+.window {
+    background-color: #313131;
+    border-radius: 4px;
+    margin: 1%;
+    position: relative
+}
+
+.window > p {
+    font-size: 16pt;
+    color: white;
+    margin-bottom: 0;
+    margin-left: 15px;
+    text-align: left;
+}
 
 img {
     width: 100%;
@@ -45,8 +61,6 @@ img {
     right: -3px;
 }
 
-
-
 .topButton:hover {
     background: #424242;
 }
@@ -55,12 +69,12 @@ img {
     transform: scale(0.95);
 }
 
-#container div:hover {
+.tab:hover {
     border: 1px solid #313131;
     transform: scale(1.05);
 }
 
-img:hover {
+.tab img:hover {
     opacity: 1;
 }
 
