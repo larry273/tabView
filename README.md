@@ -15,8 +15,14 @@ https://chrome.google.com/webstore/detail/tabview/bgcmjpjlnpbhjoehlpmadpljgaigil
   <img src="screens/Overview.png" width="500" />
   <img src="screens/click.png" width="500" /> 
   <img src="screens/search.png" width="500" />
+  <img src="screens/arrange.png" width="500" />
 </p>
 
-# Credits
 
-SortableJS - https://github.com/SortableJS/Sortable
+
+# Credits
+<a href="https://github.com/SortableJS/Sortable">SortableJS</a>
+
+
+<br>
+Just if you want to, <a href="paypal.me/larrystaecey">paypal link</a>
