@@ -63,7 +63,8 @@ function getThumbnail(window){
 				image: imgUrl, 
 				title: tabs[0].title,
 				window: window,
-				id: tabs[0].id
+				id: tabs[0].id,
+				index: tabs[0].index
 			}, function(response) {
 
 			});
@@ -92,6 +93,33 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
 		}
 	}
 }); 
+
+//re-take thumbnail on tab moved
+chrome.tabs.onMoved.addListener(function(tabId, moveInfo){
+	chrome.tabs.get(tabId, function(tab){
+		if(tab.title != extensionWindowName){
+			getThumbnail(tab.windowId);
+		}
+	});
+})
+
+//retake thumbnail on tab detached
+chrome.tabs.onDetached.addListener(function(tabId, detachInfo){
+	chrome.tabs.get(tabId, function(tab){
+		if(tab.title != extensionWindowName){
+			getThumbnail(tab.windowId);
+		}
+	});
+})
+
+//re-take thumbnail on tab attached
+chrome.tabs.onAttached.addListener(function(tabId, attachInfo){
+	chrome.tabs.get(tabId, function(tab){
+		if(tab.title != extensionWindowName){
+			getThumbnail(tab.windowId);
+		}
+	});
+})
 
 //remove thumbnail on tab removal
 chrome.tabs.onRemoved.addListener(function(tabId, removeInfo) {

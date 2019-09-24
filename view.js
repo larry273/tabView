@@ -80,10 +80,11 @@ function getAllTabs(){
 					currentTabs[k].title = tb.title;
 					//currentTabs[k].image = null;
 					currentTabs[k].win = tb.window;
+					currentTabs[k].index = tb.index;
 					return;
 				}
 			}
-			currentTabs.push({win: tb.windowId, id: tb.id, title: tb.title, image: null});
+			currentTabs.push({win: tb.windowId, id: tb.id, title: tb.title, image: null, index: tb.index});
             
         });
     });
@@ -159,17 +160,71 @@ function createWinDiv(win){
 }
 
 //add element to interface
-function addElement(imageSrc, title, id, win){
+function addElement(imageSrc, title, id, win, index){
 	//placeholder image
 	if (typeof(imageSrc) == 'undefined' || imageSrc == null){
 		imageSrc = 'images/blank.png';
 	}
 	
 	//update existing id if already exists
+	//update positon of tab (index, window)
 	var el = document.getElementById(id);
 	if (typeof(el) != 'undefined' && el != null){
 		el.children[2].src = imageSrc;
 		el.children[0].innerHTML = title;
+
+		parId = parseInt(el.parentNode.id);
+		//window ID changed
+		if (win != parId){
+			//add to window div, create if not exists
+			if(document.getElementById(win)){
+				var src = document.getElementById(win); 
+				if(src.children.length <= (index+1)){
+					src.append(el);
+				}
+				else{
+					var newIndex = null;
+					if (index < oldIndex){
+						newIndex = index + 1;
+					}
+					else {
+						newIndex = index + 2;
+					}
+					src.insertBefore(el, src.children[newIndex]);
+				}
+			}
+			else{
+				var src = createWinDiv(win);
+				src.append(el);
+			}
+			var oldWin = document.getElementById(parId);
+			removeWindowEl(oldWin);
+
+		}
+		else{
+			//get current index and update if different
+			for (let k in currentTabs) {
+				if (currentTabs[k].id === id) {
+					var oldIndex = currentTabs[k].index;
+					if (oldIndex != index){
+						var src = document.getElementById(win); 
+						if(src.children.length <= (index+1)){
+							src.insertBefore(el, src.nextSibling);
+						}
+						else{
+							var newIndex = null;
+							if (index < oldIndex){
+								newIndex = index + 1;
+							}
+							else {
+								newIndex = index + 2;
+							}
+							src.insertBefore(el, src.children[newIndex]);
+						}
+					}
+				}
+			}
+		}
 		return;
 	}
 
@@ -229,6 +284,7 @@ function moveTab(tab, index, win, oldWin){
 	for (let k in currentTabs) {
 		if (currentTabs[k].id === tabId) {
 			currentTabs[k].win = winId;
+			currentTabs[k].index = index;
 		}
 	}
 }
@@ -263,7 +319,7 @@ function messageReceived(msg) {
 		removeTabRef(msg.id);
 	}
 	else{
-		addElement(msg.image, msg.title, msg.id, msg.window);
+		addElement(msg.image, msg.title, msg.id, msg.window, msg.index);
 		
 		//update existing value if exists
 		for (let k in currentTabs) {
@@ -271,11 +327,12 @@ function messageReceived(msg) {
 				currentTabs[k].title = msg.title;
 				currentTabs[k].image = msg.image;
 				currentTabs[k].win = msg.window;
+				currentTabs[k].index = msg.index;
 				return;
 			}
 		}
 		//add tab to total list
-		currentTabs.push({win: msg.window, id: msg.id, title: msg.title, image: msg.image});
+		currentTabs.push({win: msg.window, id: msg.id, title: msg.title, image: msg.image, index: msg.index});
 	}
 }
 
